@@ -3583,7 +3583,7 @@ class Component extends DCLogic {
         { valor: prop.banos, etiqueta: es ? 'Baños' : 'Bathrooms' },
         { valor: this.num(prop.built), etiqueta: es ? 'm² construidos' : 'Built m²' },
         { valor: this.num(prop.plot), etiqueta: prop.tipo === 'Ático' ? (es ? 'm² terraza' : 'Terrace m²') : (es ? 'm² parcela' : 'Plot m²') },
-        { valor: prop.tipo, etiqueta: es ? 'Tipología' : 'Type' }
+        { valor: prop.tipologia ? this.L(prop.tipologia) : (es ? prop.tipo : (prop.tipoEn || prop.tipo)), etiqueta: es ? 'Tipología' : 'Type' }
       ],
       asesorTile: 'display:flex;align-items:center;justify-content:center;width:56px;height:56px;flex:none;background:#EDD7BF;font-family:\'Cormorant Garamond\',serif;font-weight:500;font-size:24px;color:#7A2027',
       asesorInicial: asesor.nombre.charAt(0),
