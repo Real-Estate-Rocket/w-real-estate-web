@@ -1893,7 +1893,7 @@
       <span>{{ t.pieCopyright }}</span>
       <span style="display:flex;flex-wrap:wrap;gap:18px">
         <sc-for list="{{ pieLegales }}" as="lg" hint-placeholder-count="3">
-          <a href="#" style="color:inherit;border-bottom:1px solid rgba(247,240,230,.28);padding-bottom:2px" style-hover="color:#EDD7BF">{{ lg }}</a>
+          <a href="{{ lg.href }}" style="color:inherit;border-bottom:1px solid rgba(247,240,230,.28);padding-bottom:2px" style-hover="color:#EDD7BF">{{ lg.label }}</a>
         </sc-for>
         <a href="https://wrealestate.es/portal/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;color:inherit;border-bottom:1px solid rgba(247,240,230,.28);padding-bottom:2px" style-hover="color:#EDD7BF"><svg width="10" height="11" viewBox="0 0 10 11" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="1.5" y="5" width="7" height="5" rx=".6"></rect><path d="M3.2 5V3.4a1.8 1.8 0 0 1 3.6 0V5"></path></svg>{{ t.piePortal }}</a>
       </span>
@@ -2321,7 +2321,7 @@ class Component extends DCLogic {
       pieLema: 'Agencia inmobiliaria de lujo en la Costa del Sol. Marbella, Estepona, Benahavís y Sotogrande.',
       pieCopyright: '© 2026 W Real Estate · [RAZÓN SOCIAL] · [CIF]',
       formNota: 'Sus datos llegan directamente al equipo de W Real Estate, con la referencia de esta propiedad.',
-      pieLegales: ['Aviso legal', 'Política de privacidad', 'Cookies'],
+      pieLegales: [{ label: 'Aviso legal', href: '/aviso-legal/' }, { label: 'Política de privacidad', href: '/privacidad/' }, { label: 'Cookies', href: '/cookies/' }],
       piePortal: 'Portal privado',
       pieCols: [
         { titulo: 'Propiedades', items: ['Villas', 'Áticos', 'Obra nueva', 'Cartera privada'] },
@@ -2663,7 +2663,7 @@ class Component extends DCLogic {
       pieLema: 'Luxury real estate agency on the Costa del Sol. Marbella, Estepona, Benahavís and Sotogrande.',
       pieCopyright: '© 2026 W Real Estate · [LEGAL ENTITY] · [TAX ID]',
       formNota: 'Your details go straight to the W Real Estate team, together with this property reference.',
-      pieLegales: ['Legal notice', 'Privacy policy', 'Cookies'],
+      pieLegales: [{ label: 'Legal notice', href: '/en/legal-notice/' }, { label: 'Privacy policy', href: '/en/privacy/' }, { label: 'Cookies', href: '/en/cookies/' }],
       piePortal: 'Private portal',
       pieCols: [
         { titulo: 'Properties', items: ['Villas', 'Penthouses', 'New build', 'Private portfolio'] },

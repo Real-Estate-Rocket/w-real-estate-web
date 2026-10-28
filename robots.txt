@@ -13,17 +13,68 @@ Disallow: /documentos/
 
 User-agent: GPTBot
 Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
 
-User-agent: PerplexityBot
+User-agent: ChatGPT-User
 Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
+
+User-agent: Applebot
+Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /portal/
+Disallow: /fichas/
+Disallow: /documentos/
 
 Sitemap: https://wrealestate.es/sitemap.xml
