@@ -1,6 +1,8 @@
 # Vigilante de la web: cada 15 minutos comprueba que wrealestate.es responde.
-# Si falla en tres intentos seguidos (con un minuto entre ellos), abre la incidencia «Web caída»
-# asignada a agm1212 y GitHub envía un correo. Cuando la web vuelve, la cierra y llega otro correo.
+# Si falla en tres intentos seguidos (con un minuto entre ellos), abre la incidencia «URGENTE · La web
+# wrealestate.es está caída» asignada a agm1212 y enriquecubela, y GitHub les envía un correo con ese asunto
+# (a la dirección de notificaciones de cada cuenta). Cuando la web vuelve, la renombra a «RESUELTO · …»,
+# la cierra y llega otro correo.
 # Mientras siga caída no repite el aviso: la incidencia abierta ya lo dice.
 # Para probarlo: Actions → «Vigilante de la web» → Run workflow → marcar «Simular una caída».
 # OJO: GitHub pausa las tareas programadas de un repositorio público tras 60 días sin cambios;
@@ -75,7 +77,8 @@ jobs:
           ESTADO: ${{ steps.web.outputs.estado }}
           DETALLE: ${{ steps.web.outputs.detalle }}
           EJECUCION: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          AVISAR: agm1212
+          SIMULAR: ${{ inputs.simular_caida && 'si' || 'no' }}
+          AVISAR: agm1212,enriquecubela
         run: |
           gh label create web-caida --color B60205 --description 'Aviso automático del vigilante de la web' >/dev/null 2>&1 || true
           ahora=$(TZ=Europe/Madrid date '+%d/%m/%Y a las %H:%M')
@@ -85,7 +88,9 @@ jobs:
               echo "La web sigue caída; la incidencia #$abierta ya está abierta."
               exit 0
             fi
-            cuerpo="**wrealestate.es no responde** desde el ${ahora} (hora de España). Se ha comprobado tres veces, con un minuto entre intentos.
+            titulo="URGENTE · La web wrealestate.es está caída"
+            if [ "$SIMULAR" = "si" ]; then titulo="PRUEBA · ${titulo}"; fi
+            cuerpo="**URGENTE: wrealestate.es no responde** desde el ${ahora} (hora de España). Se ha comprobado tres veces, con un minuto entre intentos.
 
           Lo que ha fallado:
           ${DETALLE}
@@ -96,10 +101,12 @@ jobs:
           3. Estado de GitHub: https://www.githubstatus.com
 
           Esta incidencia se cierra sola cuando la web vuelva a responder. Comprobación: ${EJECUCION}"
-            gh issue create --title "Web caída: wrealestate.es no responde" --label web-caida --assignee "$AVISAR" --body "$cuerpo"
+            gh issue create --title "$titulo" --label web-caida --assignee "$AVISAR" --body "$cuerpo"
             exit 1
           elif [ -n "$abierta" ]; then
-            gh issue close "$abierta" --comment "La web vuelve a responder bien desde el ${ahora} (hora de España). Comprobación: ${EJECUCION}"
+            # Nuevo asunto para que el correo de vuelta a la normalidad no se confunda con el urgente.
+            gh issue edit "$abierta" --title "RESUELTO · La web wrealestate.es vuelve a funcionar"
+            gh issue close "$abierta" --comment "**RESUELTO:** la web vuelve a responder bien desde el ${ahora} (hora de España). Comprobación: ${EJECUCION}"
           else
             echo "Todo correcto; no hay ninguna incidencia abierta."
           fi
