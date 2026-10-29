@@ -1,0 +1,119 @@
+# Agente de diagnóstico: cuando el vigilante abre una incidencia «Web caída», reúne datos (respuestas HTTP,
+# DNS, certificado, configuración de Pages, publicaciones, commits y estado de GitHub) y Codex busca la causa.
+# Sin preguntar solo hace una cosa: volver a lanzar la publicación de Pages si la última falló.
+# Si el arreglo está en los archivos, lo sube a una rama y abre una solicitud de cambios para que una persona
+# la revise y la apruebe (nunca publica directamente en main). Si está fuera (Pages, DNS, GitHub caído),
+# explica los pasos en la incidencia. El informe llega por correo a quienes tienen asignada la incidencia.
+# Necesita el secreto OPENAI_API_KEY (lo añade un administrador en Settings → Secrets and variables → Actions).
+# Sin él, publica igualmente los datos y las comprobaciones automáticas.
+# A mano: Actions → «Agente de diagnóstico» → Run workflow (sin número de incidencia, el informe queda
+# solo en el resumen de la ejecución y no avisa a nadie).
+name: Agente de diagnóstico
+
+on:
+  workflow_call:
+    inputs:
+      incidencia:
+        type: string
+        default: ''
+    secrets:
+      OPENAI_API_KEY:
+        required: false
+  workflow_dispatch:
+    inputs:
+      incidencia:
+        description: 'Número de la incidencia donde comentar (vacío: informe solo en el resumen de la ejecución)'
+        type: string
+        default: ''
+
+permissions: {}
+
+jobs:
+  analizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      pages: read
+      actions: read
+      issues: read
+    outputs:
+      pistas: ${{ steps.datos.outputs.pistas }}
+      rehacer: ${{ steps.datos.outputs.rehacer }}
+      con_ia: ${{ steps.clave.outputs.hay }}
+      informe: ${{ steps.codex.outputs['final-message'] }}
+      parche: ${{ steps.cambios.outputs.parche }}
+      archivos: ${{ steps.cambios.outputs.archivos }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 50
+          persist-credentials: false
+
+      - name: Reunir datos
+        id: datos
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          INCIDENCIA: ${{ inputs.incidencia }}
+        run: bash .github/agente/reunir-datos.sh
+
+      - name: Comprobar si hay clave de OpenAI
+        id: clave
+        env:
+          CLAVE: ${{ secrets.OPENAI_API_KEY }}
+        run: if [ -n "$CLAVE" ]; then echo "hay=si" >> "$GITHUB_OUTPUT"; else echo "hay=no" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Codex busca la causa
+        id: codex
+        if: steps.clave.outputs.hay == 'si'
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt-file: .github/agente/instrucciones.md
+          permission-profile: ':workspace'
+
+      - name: Recoger los cambios de archivos que proponga
+        id: cambios
+        if: steps.clave.outputs.hay == 'si'
+        run: |
+          rm -rf .diagnostico
+          # El agente no puede tocar la automatización: se deshace cualquier cambio en .github/.
+          git checkout -- .github
+          git clean -fdq -- .github
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Codex no ha cambiado ningún archivo."
+            exit 0
+          fi
+          git diff --cached --stat
+          { echo "archivos<<FIN_ARCHIVOS"; git diff --cached --stat; echo "FIN_ARCHIVOS"; } >> "$GITHUB_OUTPUT"
+          echo "parche=$(git diff --cached --binary | gzip -9 | base64 -w0)" >> "$GITHUB_OUTPUT"
+
+  actuar:
+    needs: analizar
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Publicar el diagnóstico y aplicar lo que sea seguro
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          INCIDENCIA: ${{ inputs.incidencia }}
+          PISTAS: ${{ needs.analizar.outputs.pistas }}
+          REHACER: ${{ needs.analizar.outputs.rehacer }}
+          CON_IA: ${{ needs.analizar.outputs.con_ia }}
+          INFORME: ${{ needs.analizar.outputs.informe }}
+          PARCHE: ${{ needs.analizar.outputs.parche }}
+          ARCHIVOS: ${{ needs.analizar.outputs.archivos }}
+          RESULTADO_ANALISIS: ${{ needs.analizar.result }}
+          EJECUCION: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: bash .github/agente/actuar.sh

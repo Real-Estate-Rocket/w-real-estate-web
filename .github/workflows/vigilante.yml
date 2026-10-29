@@ -4,6 +4,8 @@
 # (a la dirección de notificaciones de cada cuenta). Cuando la web vuelve, la renombra a «RESUELTO · …»,
 # la cierra y llega otro correo.
 # Mientras siga caída no repite el aviso: la incidencia abierta ya lo dice.
+# Al abrir la incidencia lanza el agente de diagnóstico (diagnostico.yml), que añade su análisis
+# como comentario (llega también por correo).
 # Para probarlo: Actions → «Vigilante de la web» → Run workflow → marcar «Simular una caída».
 # OJO: GitHub pausa las tareas programadas de un repositorio público tras 60 días sin cambios;
 # si pasa, se reactiva en Actions → «Vigilante de la web» → Enable workflow.
@@ -19,9 +21,7 @@ on:
         type: boolean
         default: false
 
-permissions:
-  contents: read
-  issues: write
+permissions: {}
 
 concurrency:
   group: vigilante
@@ -31,6 +31,11 @@ jobs:
   comprobar:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    outputs:
+      incidencia: ${{ steps.aviso.outputs.incidencia }}
     steps:
       - name: Comprobar la web (tres intentos, con un minuto entre ellos)
         id: web
@@ -71,6 +76,7 @@ jobs:
           fi
 
       - name: Abrir o cerrar la incidencia «Web caída»
+        id: aviso
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -100,9 +106,10 @@ jobs:
           2. Cloudflare → DNS: los cuatro registros A a 185.199.108.153 · 109 · 110 · 111 y el CNAME de www a real-estate-rocket.github.io, todos con la nube gris.
           3. Estado de GitHub: https://www.githubstatus.com
 
-          Esta incidencia se cierra sola cuando la web vuelva a responder. Comprobación: ${EJECUCION}"
-            gh issue create --title "$titulo" --label web-caida --assignee "$AVISAR" --body "$cuerpo"
-            exit 1
+          El agente de diagnóstico añadirá aquí su análisis en unos minutos. Esta incidencia se cierra sola cuando la web vuelva a responder. Comprobación: ${EJECUCION}"
+            url=$(gh issue create --title "$titulo" --label web-caida --assignee "$AVISAR" --body "$cuerpo")
+            echo "$url"
+            echo "incidencia=${url##*/}" >> "$GITHUB_OUTPUT"
           elif [ -n "$abierta" ]; then
             # Nuevo asunto para que el correo de vuelta a la normalidad no se confunda con el urgente.
             gh issue edit "$abierta" --title "RESUELTO · La web wrealestate.es vuelve a funcionar"
@@ -110,3 +117,28 @@ jobs:
           else
             echo "Todo correcto; no hay ninguna incidencia abierta."
           fi
+
+  diagnostico:
+    needs: comprobar
+    if: needs.comprobar.outputs.incidencia != ''
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      pages: write
+      actions: read
+    uses: ./.github/workflows/diagnostico.yml
+    with:
+      incidencia: ${{ needs.comprobar.outputs.incidencia }}
+    secrets: inherit
+
+  # La ejecución se marca en rojo cuando abre una incidencia nueva, para que se vea en Actions.
+  marcar:
+    needs: [comprobar, diagnostico]
+    if: always() && needs.comprobar.outputs.incidencia != ''
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - run: |
+          echo "Web caída: incidencia #${{ needs.comprobar.outputs.incidencia }}"
+          exit 1
