@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estamos construyendo algo mejor · W Real Estate</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="/w-logo-tinta.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--blanco:#FFFFFF;--champan:#F6EFE3;--crema:#EDD7BF;--carbon:#1E1A17;--burdeos:#7A2027;--burdeos2:#5E171E;--gris:#5C534B;--gris2:#786E64;--linea:rgba(30,26,23,.13)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--blanco);color:var(--carbon);font-family:'Lato','Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--burdeos)}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit}
+::selection{background:#EDD7BF;color:#1E1A17}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:rgba(122,32,39,.3)}
+::-webkit-scrollbar-track{background:rgba(30,26,23,.06)}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;margin:0;text-wrap:balance}
+.cab{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:18px clamp(16px,2.4vw,44px);padding:24px 6vw;transition:all .45s cubic-bezier(.2,.8,.2,1);background:transparent;color:#F7F0E6}
+.cab.fija{padding:14px 6vw;background:rgba(255,255,255,.96);color:var(--carbon);border-bottom:1px solid rgba(30,26,23,.1);backdrop-filter:blur(12px)}
+.cab nav{display:flex;flex:1 1 0;align-items:center;gap:clamp(20px,2.6vw,46px)}
+.cab nav.izq{justify-content:flex-end;padding-right:clamp(30px,4vw,70px)}
+.cab nav.der{justify-content:flex-start;padding-left:clamp(30px,4vw,70px)}
+.cab nav a,.cab .idi a{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;transition:opacity .3s}
+.cab nav a:hover{opacity:.6}
+.cab .tel{font-size:12.5px;letter-spacing:.06em;opacity:.85;text-transform:none;white-space:nowrap}
+.cab .tel:hover{opacity:1}
+.cab .sep{flex:1}
+.cab .marca{display:flex;flex:0 0 auto;align-items:center;justify-content:center}
+.cab .logo{height:56px;width:auto;display:block;transition:height .45s cubic-bezier(.2,.8,.2,1)}
+.cab.fija .logo{height:36px}
+.cab .claro{display:block}.cab .tinta{display:none}
+.cab.fija .claro{display:none}.cab.fija .tinta{display:block}
+.cab .idi{display:flex;align-items:center;gap:4px;font-size:11.5px;letter-spacing:.08em}
+.cab .idi a{padding:15px 7px;margin:-15px 0;opacity:.5;font-size:11.5px}
+.cab .idi a.on{opacity:1;font-weight:700}
+.cab .idi .barra{opacity:.35}
+.menuBtn{display:none;flex:1 1 0;flex-direction:column;align-items:flex-start;gap:6px;padding:12px 12px 12px 0;background:none;border:0;color:inherit;cursor:pointer}
+.menuBtn span{display:block;height:1px;background:currentColor}
+.menuBtn span:first-child{width:26px}.menuBtn span:last-child{width:18px}
+.menuPanel{position:fixed;inset:0;z-index:90;background:var(--burdeos);color:#F7F0E6;display:none;flex-direction:column;padding:22px 7vw 40px;overflow:auto}
+.menuPanel.abierto{display:flex}
+.menuPanel .arriba{display:flex;align-items:center;justify-content:space-between;margin-bottom:6vh}
+.menuPanel img{height:40px;width:auto}
+.menuPanel .cerrarM{background:none;border:0;color:inherit;font-family:inherit;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:14px 0 14px 14px;cursor:pointer}
+.menuPanel nav{display:flex;flex-direction:column}
+.menuPanel nav a{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:34px;padding:14px 0;border-bottom:1px solid rgba(247,240,230,.2)}
+.menuPanel .pieM{margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:15px}
+.hero{position:relative;height:100vh;min-height:640px;overflow:hidden;background:var(--carbon)}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,17,15,.38) 0%,rgba(20,17,15,0) 30%,rgba(20,17,15,0) 55%,rgba(20,17,15,.78) 100%)}
+.flecha{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(247,240,230,.35);background:none;color:#F7F0E6;cursor:pointer;transition:all .3s ease}
+.flecha:hover{background:#F7F0E6;color:var(--carbon)}
+.flecha.ant{left:2vw}.flecha.sig{right:2vw}
+.heroTxt{position:absolute;left:0;right:0;bottom:0;padding:0 6vw 5vh;display:flex;flex-direction:column;gap:20px;color:#F7F0E6}
+.miga{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--crema)}
+.miga a:hover{color:#fff}
+.hero h1{margin:0;font-size:clamp(34px,5vw,76px);line-height:1.02;color:#F7F0E6}
+.heroDatos{display:flex;align-items:baseline;gap:22px;flex-wrap:wrap}
+.heroPrecio{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(24px,2.6vw,36px)}
+.zona{font-size:14px;letter-spacing:.06em;color:rgba(247,240,230,.8)}
+.sello{padding:5px 11px;background:var(--burdeos);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
+.heroPie{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px;border-top:1px solid rgba(247,240,230,.2);padding-top:18px}
+.heroPie .contador{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(247,240,230,.7)}
+.heroPie .verG{padding:12px 28px;border:2px solid rgba(247,240,230,.85);background:none;color:#F7F0E6;font-family:inherit;font-size:14px;cursor:pointer;transition:all .3s ease}
+.heroPie .verG:hover{background:#F7F0E6;color:var(--carbon)}
+.lightbox{position:fixed;inset:0;z-index:120;background:rgba(20,17,15,.96);display:none;flex-direction:column;padding:2vh 2vw}
+.lightbox.abierto{display:flex}
+.lightbox .barraL{display:flex;align-items:center;justify-content:space-between;gap:16px;color:#F7F0E6;padding-bottom:12px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.lightbox .barraL button{background:none;border:0;color:inherit;font-family:inherit;font-size:12px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:10px}
+.lightbox .grande{flex:1;min-height:0;width:100%;object-fit:contain;display:block}
+.lightbox .tira{display:flex;gap:8px;overflow-x:auto;padding-top:12px}
+.lightbox .tira button{position:relative;flex:none;width:104px;aspect-ratio:4/3;padding:0;border:0;background:var(--carbon);cursor:pointer;opacity:.5;outline:1px solid rgba(247,240,230,.2);outline-offset:-1px}
+.lightbox .tira button.on{opacity:1;outline:2px solid var(--crema)}
+.lightbox .tira img{width:100%;height:100%;object-fit:cover}
+.env{max-width:1280px;margin:0 auto;padding:0 6vw}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:22px 26px;padding:clamp(34px,4vw,56px) 0;border-bottom:1px solid var(--linea)}
+.specs div{display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(30,26,23,.16);padding-top:14px}
+.specs .v{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;line-height:1;color:var(--burdeos)}
+.specs .k{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gris2)}
+.dos{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(32px,5vw,70px);align-items:start;padding:clamp(40px,5vw,72px) 0}
+.eyebrow{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--burdeos)}
+.cuerpo h2{font-size:clamp(23px,2.6vw,34px);line-height:1.16;margin:10px 0 16px;max-width:20em}
+.cuerpo p{margin:0 0 14px;color:var(--gris);line-height:1.9;max-width:44em}
+.feat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:var(--linea);margin-top:12px}
+.feat span{background:#fff;padding:13px 16px;font-size:13.5px}
+.panel{position:sticky;top:24px;display:flex;flex-direction:column;gap:14px}
+.caja{background:var(--champan);padding:clamp(22px,2.4vw,32px);display:flex;flex-direction:column;gap:16px}
+.caja .precio{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.2vw,44px);font-weight:300;line-height:1}
+.caja .m2{font-size:11.5px;color:var(--gris2)}
+.btn{padding:13px 26px;font-size:14px;text-align:center;border:2px solid var(--burdeos);background:var(--burdeos);color:#fff;cursor:pointer;font-family:inherit;transition:background .3s}
+.btn:hover{background:var(--burdeos2);border-color:var(--burdeos2)}
+.btn.sec{background:transparent;border-color:var(--carbon);color:var(--carbon)}
+.btn.sec:hover{background:var(--carbon);color:var(--crema)}
+.tarjeta{background:#fff;border:1px solid var(--linea);padding:clamp(20px,2.2vw,28px);display:flex;flex-direction:column;gap:14px}
+.tarjeta .fila{display:flex;align-items:center;gap:14px}
+.tarjeta img{width:60px;height:60px;object-fit:cover;object-position:center 22%;flex:none}
+.tarjeta .nom{font-size:15px}
+.tarjeta .cargo{font-size:12px;color:var(--gris2)}
+.gastos{display:flex;flex-direction:column;gap:9px;font-size:13.5px;color:var(--gris)}
+.gastos div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--linea);padding-bottom:8px}
+.galeria{padding:0 0 clamp(44px,5vw,76px)}
+.rej{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+.rej a{position:relative;aspect-ratio:16/11;overflow:hidden;background:var(--champan);display:block}
+.rej img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.rej a:hover img{transform:scale(1.04)}
+.mapa{background:var(--carbon);color:#F7F0E6;padding:clamp(40px,5vw,72px) 6vw}
+.mapa .env{padding:0}
+.mapa h2{font-size:clamp(23px,2.6vw,34px);margin:10px 0 14px}
+.mapa p{color:rgba(247,240,230,.72);max-width:38em;margin:0 0 6px}
+.dist{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 30px;margin-top:18px}
+.dist div{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid rgba(247,240,230,.14);padding:11px 0;font-size:14px}
+.dist b{color:var(--crema);font-weight:400;white-space:nowrap}
+.sim{background:var(--champan);padding:clamp(44px,6vw,90px) 6vw}
+.sim h2{font-size:clamp(24px,3vw,40px);margin-bottom:26px}
+.simRej{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.2vw,32px)}
+.simRej .foto{position:relative;aspect-ratio:4/3;overflow:hidden;background:#fff}
+.simRej img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.simRej a:hover img{transform:scale(1.05)}
+.simRej .nom{font-family:'Cormorant Garamond',serif;font-size:23px;margin-top:12px;display:block}
+.simRej .meta{font-size:13px;color:var(--gris);display:block;margin-top:4px}
+.simRej .pr{font-size:15px;font-weight:700;display:block;margin-top:6px}
+.pie{background:var(--carbon);color:#F7F0E6;padding:clamp(40px,5vw,70px) 6vw clamp(26px,3vw,38px)}
+.pie .top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:26px;max-width:1280px;margin:0 auto}
+.pie img{height:52px;width:auto;margin-bottom:14px}
+.pie p{color:rgba(247,240,230,.66);font-size:14px;max-width:24em;margin:0}
+.pie nav{display:flex;flex-direction:column;gap:9px;font-size:13.5px}
+.pie a:hover{color:var(--crema)}
+.pie .legales{display:flex;flex-wrap:wrap;gap:6px 18px}
+.pie .legales a{border-bottom:1px solid rgba(247,240,230,.28);padding-bottom:1px}
+.pie .abajo{max-width:1280px;margin:26px auto 0;padding-top:20px;border-top:1px solid rgba(247,240,230,.16);font-size:11.5px;color:rgba(247,240,230,.6);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+dialog{border:0;padding:0;max-width:min(680px,94vw);width:100%;background:#fff;box-shadow:0 40px 90px -50px rgba(43,10,14,.7)}
+dialog::backdrop{background:rgba(30,26,23,.82)}
+.modal{padding:clamp(20px,2.6vw,34px);display:flex;flex-direction:column;gap:14px}
+.modal .fila{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.modal h2{font-size:clamp(21px,2.4vw,30px)}
+.modal iframe{width:100%;min-height:600px;border:0;display:block}
+.modal .cerrar{background:none;border:0;font-family:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gris2);cursor:pointer;padding:8px}
+.nota{font-size:11.5px;color:var(--gris2)}
+:focus-visible{outline:2px solid var(--burdeos);outline-offset:2px}
+@media (max-width:900px){
+ .cab nav{display:none}
+ .cab .menuBtn{display:flex}
+ /* Ocultas las dos navegaciones, el logo se iria a la derecha. Se centra como en la portada.
+    Al sacarlo del flujo deja de dar altura a la barra, asi que se fija a mano: 40 del logo + 14+14. */
+ .cab{min-height:68px}
+ .cab .marca{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+ .cab{padding:14px 6vw}
+ .cab .logo{height:40px}
+ .hero{height:100svh;min-height:520px}
+ .heroTxt{padding:0 6vw 4vh;gap:14px}
+ .flecha{width:44px;height:44px}
+ .dos{grid-template-columns:1fr;gap:30px}
+ .panel{position:static}
+ .rej{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .simRej{grid-template-columns:1fr}
+ .cab nav{display:none}
+ .cab{padding:14px 6vw}
+ .feat{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+
+[hidden]{display:none!important}
+.obra{min-height:100svh;background:var(--champan);padding:calc(92px + clamp(24px,4vw,56px)) 6vw clamp(48px,6vw,90px);display:flex;align-items:center}
+.obra .dentro{width:100%;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);gap:clamp(32px,5vw,80px);align-items:center}
+.obra .eyebrow{display:block;margin-bottom:16px}
+.obra h1{margin:0 0 22px;font-size:clamp(40px,5.2vw,74px);line-height:1.02}
+.obra h1 em{font-style:italic;color:var(--burdeos)}
+.obra p{margin:0 0 14px;max-width:32em;color:var(--gris);font-size:16.5px;line-height:1.85}
+.obra .acciones{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.obra .menor{margin-top:28px;font-size:12.5px;letter-spacing:.06em;color:var(--gris2)}
+.obra .menor a{color:var(--carbon);border-bottom:1px solid var(--linea);padding-bottom:1px}
+.obra .menor a:hover{color:var(--burdeos);border-bottom-color:var(--burdeos)}
+.lienzo{position:relative;margin:0;aspect-ratio:640/420;overflow:hidden;background:linear-gradient(180deg,#110E0C 0%,#1E1A17 80%);box-shadow:0 50px 90px -60px rgba(43,10,14,.65)}
+.lienzo svg{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity .8s ease}
+.lienzo .rotulo{position:absolute;top:16px;left:18px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,215,191,.6)}
+.lienzo .estado{position:absolute;left:18px;right:18px;bottom:14px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--crema);transition:opacity .8s ease}
+.lienzo .estado b{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(18px,1.8vw,24px)}
+.lienzo .estado span{font-size:11px;letter-spacing:.2em;color:rgba(237,215,191,.6);font-variant-numeric:tabular-nums;white-space:nowrap}
+.lienzo .barra{position:absolute;left:0;bottom:0;height:2px;background:var(--crema);transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.lienzo.fuera svg,.lienzo.fuera .estado{opacity:0}
+.obraSvg .p{transition:opacity .9s ease,transform 1.1s cubic-bezier(.2,.8,.2,1),stroke-dashoffset 1.5s cubic-bezier(.6,.05,.25,1)}
+.obraSvg .crece{transform-box:fill-box;transform-origin:50% 100%}
+.obraSvg .creceX{transform-box:fill-box;transform-origin:0 50%}
+.obraSvg:not(.anim) .sale{display:none}
+.obraSvg.anim .p{opacity:0}
+.obraSvg.anim .trazo{stroke-dasharray:1 1;stroke-dashoffset:1}
+.obraSvg.anim .crece{transform:scaleY(0)}
+.obraSvg.anim .creceX{transform:scaleX(0)}
+.obraSvg.f1 .e1,.obraSvg.f2 .e2,.obraSvg.f3 .e3,.obraSvg.f4 .e4,.obraSvg.f5 .e5,.obraSvg.f6 .e6,.obraSvg.f7 .e7{opacity:1;stroke-dashoffset:0;transform:none}
+.obraSvg.f6 .sale{opacity:0}
+.obraSvg.reinicio .p{transition:none!important}
+.obraSvg .carro{animation:carro 7s ease-in-out infinite}
+.obraSvg .brillo{animation:brillo 3.2s ease-in-out infinite}
+.obraSvg .reflejo{animation:reflejo 2.6s ease-in-out infinite}
+@keyframes carro{0%,100%{transform:translateX(0)}50%{transform:translateX(92px)}}
+@keyframes brillo{0%,100%{opacity:.9}50%{opacity:.25}}
+@keyframes reflejo{0%,100%{opacity:.85;transform:translateX(0)}50%{opacity:.35;transform:translateX(3px)}}
+@media (max-width:900px){
+ .obra{padding-top:calc(68px + 30px);align-items:flex-start}
+ .obra .dentro{grid-template-columns:1fr;gap:30px}
+ .lienzo{order:-1}
+}
+@media (max-width:560px){
+ .lienzo .rotulo{display:none}
+ .obra .acciones .btn{flex:1 1 100%}
+}
+@media (prefers-reduced-motion:reduce){.obraSvg *{animation:none!important}}
+</style>
+</head>
+<body>
+
+<div data-idioma="es"><header class="cab fija" id="cab" data-solida="1">
+  <nav class="izq"><a href="/comprar/">Comprar</a><a href="/vender/">Vender</a><a href="/zonas/">Zonas</a></nav>
+  <button class="menuBtn" id="menuBtn" type="button" aria-label="Menú"><span></span><span></span></button>
+  <a class="marca" href="/" aria-label="W Real Estate">
+    <img class="logo claro" src="/w-logo-claro.png" alt="W Real Estate" width="123" height="105">
+    <img class="logo tinta" src="/w-logo-tinta.png" alt="W Real Estate" width="123" height="105">
+  </a>
+  <nav class="der"><a href="/nosotros/">Nosotros</a><a href="/contacto/">Contacto</a>
+    <span class="sep"></span>
+    <a class="tel" href="tel:+34623798619">+34 623 79 86 19</a>
+    <span class="idi"><a class="on" href="#" hreflang="es">ES</a><span class="barra">|</span><a class="" href="?lang=en" hreflang="en">EN</a></span>
+  </nav>
+</header>
+<div class="menuPanel" id="menuPanel">
+  <div class="arriba">
+    <img src="/w-logo-claro.png" alt="W Real Estate" width="94" height="80">
+    <button class="cerrarM" type="button" id="menuCerrar">Cerrar</button>
+  </div>
+  <nav><a href="/comprar/">Comprar</a><a href="/vender/">Vender</a><a href="/zonas/">Zonas</a><a href="/nosotros/">Nosotros</a><a href="/contacto/">Contacto</a></nav>
+  <div class="pieM"><a href="tel:+34623798619">+34 623 79 86 19</a><a href="?lang=en">English</a></div>
+</div></div>
+<div data-idioma="en" hidden><header class="cab fija" id="cab" data-solida="1">
+  <nav class="izq"><a href="/en/buy/">Buy</a><a href="/en/sell/">Sell</a><a href="/en/areas/">Areas</a></nav>
+  <button class="menuBtn" id="menuBtn" type="button" aria-label="Menu"><span></span><span></span></button>
+  <a class="marca" href="/en/" aria-label="W Real Estate">
+    <img class="logo claro" src="/w-logo-claro.png" alt="W Real Estate" width="123" height="105">
+    <img class="logo tinta" src="/w-logo-tinta.png" alt="W Real Estate" width="123" height="105">
+  </a>
+  <nav class="der"><a href="/en/about/">About</a><a href="/en/contact/">Contact</a>
+    <span class="sep"></span>
+    <a class="tel" href="tel:+34623798619">+34 623 79 86 19</a>
+    <span class="idi"><a class="on" href="?lang=es" hreflang="es">ES</a><span class="barra">|</span><a class="on" href="#" hreflang="en">EN</a></span>
+  </nav>
+</header>
+<div class="menuPanel" id="menuPanel">
+  <div class="arriba">
+    <img src="/w-logo-claro.png" alt="W Real Estate" width="94" height="80">
+    <button class="cerrarM" type="button" id="menuCerrar">Close</button>
+  </div>
+  <nav><a href="/en/buy/">Buy</a><a href="/en/sell/">Sell</a><a href="/en/areas/">Areas</a><a href="/en/about/">About</a><a href="/en/contact/">Contact</a></nav>
+  <div class="pieM"><a href="tel:+34623798619">+34 623 79 86 19</a><a href="?lang=es">Español</a></div>
+</div></div>
+
+<main class="obra">
+  <div class="dentro">
+    <div class="texto">
+    <div data-idioma="es">
+      <span class="eyebrow">Obras de mejora</span>
+      <h1>Estamos construyendo <em>algo mejor</em></h1>
+      <p>Estamos realizando mejoras en nuestra web para ofrecerle una experiencia todavía mejor. Es posible que esta página haya cambiado de dirección o que ya no esté disponible.</p>
+      <p data-propiedad hidden>Si buscaba una propiedad concreta, puede que se haya vendido o retirado del mercado. Nuestro equipo puede enseñarle otras parecidas.</p>
+      <div class="acciones">
+        <a class="btn" data-ver href="/comprar/">Ver propiedades</a>
+        <a class="btn sec" href="/zonas/">Guías de zona</a>
+        <a class="btn sec" data-whatsapp href="https://wa.me/34623798619" target="_blank" rel="noopener">Escríbanos por WhatsApp</a>
+      </div>
+      <p class="menor"><a href="/">Volver al inicio</a> · Código de error 404</p>
+    </div>
+    <div data-idioma="en" hidden>
+      <span class="eyebrow">Improvements under way</span>
+      <h1>We’re building <em>something better</em></h1>
+      <p>We’re making improvements to our website to give you an even better experience. This page may have moved, or it may no longer be available.</p>
+      <p data-propiedad hidden>If you were looking for a specific property, it may have been sold or taken off the market. Our team can show you similar homes.</p>
+      <div class="acciones">
+        <a class="btn" data-ver href="/en/buy/">View properties</a>
+        <a class="btn sec" href="/en/areas/">Area guides</a>
+        <a class="btn sec" data-whatsapp href="https://wa.me/34623798619" target="_blank" rel="noopener">Message us on WhatsApp</a>
+      </div>
+      <p class="menor"><a href="/en/">Back to the home page</a> · Error code 404</p>
+    </div>
+    </div>
+    <figure class="lienzo" id="lienzo">
+      <svg class="obraSvg" id="obraSvg" viewBox="0 0 640 420" role="img" aria-label="Animación: una villa se construye desde los cimientos hasta quedar lista para entrar a vivir.">
+<defs>
+  <pattern id="cuadricula" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="rgba(237,215,191,.07)" stroke-width="1"/></pattern>
+  <linearGradient id="luz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F9DFAF"/><stop offset="1" stop-color="#E39C52"/></linearGradient>
+  <linearGradient id="agua" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FC0C0"/><stop offset="1" stop-color="#2C6A70"/></linearGradient>
+  <radialGradient id="halo"><stop offset="0" stop-color="#E8A65C" stop-opacity=".34"/><stop offset="1" stop-color="#E8A65C" stop-opacity="0"/></radialGradient>
+  <mask id="creciente"><rect width="640" height="420" fill="#fff"/><circle cx="106" cy="64" r="17" fill="#000"/></mask>
+</defs>
+<rect width="640" height="420" fill="url(#cuadricula)"/>
+
+<!-- 7 · Cielo de noche -->
+<circle class="p e7" cx="96" cy="72" r="20" fill="#F3E6CF" mask="url(#creciente)"/>
+<g class="p e7" style="transition-delay:0.3s"><circle class="brillo" cx="160" cy="52" r="1.3" fill="#F7F0E6" style="animation-delay:0.00s"/><circle class="brillo" cx="214" cy="86" r="1.3" fill="#F7F0E6" style="animation-delay:0.37s"/><circle class="brillo" cx="262" cy="44" r="1.3" fill="#F7F0E6" style="animation-delay:0.74s"/><circle class="brillo" cx="330" cy="64" r="1.3" fill="#F7F0E6" style="animation-delay:1.11s"/><circle class="brillo" cx="392" cy="48" r="1.3" fill="#F7F0E6" style="animation-delay:1.48s"/><circle class="brillo" cx="452" cy="84" r="1.3" fill="#F7F0E6" style="animation-delay:1.85s"/><circle class="brillo" cx="512" cy="52" r="1.3" fill="#F7F0E6" style="animation-delay:2.22s"/><circle class="brillo" cx="612" cy="104" r="1.3" fill="#F7F0E6" style="animation-delay:2.59s"/><circle class="brillo" cx="40" cy="118" r="1.3" fill="#F7F0E6" style="animation-delay:2.96s"/><circle class="brillo" cx="300" cy="108" r="1.3" fill="#F7F0E6" style="animation-delay:0.33s"/><circle class="brillo" cx="560" cy="70" r="1.3" fill="#F7F0E6" style="animation-delay:0.70s"/></g>
+
+<!-- 5 · Resplandor de las luces encendidas -->
+<ellipse class="p e5" cx="330" cy="300" rx="290" ry="95" fill="url(#halo)" style="transition-delay:1s"/>
+
+<!-- 1 · Proyecto: replanteo, cota y grúa -->
+<path class="p trazo e1 sale" pathLength="1" d="M110 336V108" fill="none" stroke="rgba(237,215,191,.25)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.25s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M548 336V108" fill="none" stroke="rgba(237,215,191,.25)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.35s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M104 118H554" fill="none" stroke="rgba(237,215,191,.55)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.55s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M104 124L116 112" fill="none" stroke="rgba(237,215,191,.55)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.9s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M542 124L554 112" fill="none" stroke="rgba(237,215,191,.55)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.9s"/>
+<text class="p e1 sale" x="329" y="110" text-anchor="middle" font-family="Lato, Arial, sans-serif" font-size="10" letter-spacing="2" fill="rgba(237,215,191,.75)" style="transition-delay:1s">24,00 m</text>
+<path class="p trazo e1 sale" pathLength="1" d="M590 330V60" fill="none" stroke="rgba(237,215,191,.55)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.2s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M602 330V60" fill="none" stroke="rgba(237,215,191,.55)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.2s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M590 330L602 315L590 300L602 285L590 270L602 255L590 240L602 225L590 210L602 195L590 180L602 165L590 150L602 135L590 120L602 105L590 90L602 75L590 60" fill="none" stroke="rgba(237,215,191,.35)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.35s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M396 60H628" fill="none" stroke="rgba(237,215,191,.55)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.6s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M400 68H602" fill="none" stroke="rgba(237,215,191,.55)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.65s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M400 68L410 60L420 68L430 60L440 68L450 60L460 68L470 60L480 68L490 60L500 68L510 60L520 68L530 60L540 68L550 60L560 68L570 60L580 68L590 60" fill="none" stroke="rgba(237,215,191,.35)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.75s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M596 60V34" fill="none" stroke="rgba(237,215,191,.55)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.8s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M596 34L398 60" fill="none" stroke="rgba(237,215,191,.4)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.85s"/>
+<path class="p trazo e1 sale" pathLength="1" d="M596 34L628 60" fill="none" stroke="rgba(237,215,191,.4)" stroke-width="1" stroke-linecap="round" style="transition-delay:0.85s"/>
+<rect class="p e1 sale" x="610" y="61" width="16" height="14" fill="#4A423B" style="transition-delay:1s"/>
+<g class="p e1 sale" style="transition-delay:1.1s"><g class="carro"><rect x="436" y="68" width="12" height="5" fill="#CFC3B4"/><path d="M442 73V128" stroke="rgba(237,215,191,.55)" stroke-width="1"/><path d="M438 128h8l-4 6z" fill="#CFC3B4"/></g></g>
+<path class="p trazo e1" pathLength="1" d="M18 330H622" fill="none" stroke="rgba(237,215,191,.7)" stroke-width="1.2" stroke-linecap="round"/>
+
+<!-- 2 · Cimientos -->
+<rect class="p e2 crece" x="96" y="318" width="452" height="12" fill="#8C8178"/>
+<path class="p trazo e2" pathLength="1" d="M96 318H548" fill="none" stroke="#B4A99D" stroke-width="1.2" stroke-linecap="round" style="transition-delay:0.45s"/>
+
+<!-- 3 · Estructura: pilares y forjados -->
+<rect class="p e3 crece" x="112" y="233" width="6" height="85" fill="#CFC3B4"/>
+<rect class="p e3 crece" x="206" y="233" width="6" height="85" fill="#CFC3B4" style="transition-delay:0.08s"/>
+<rect class="p e3 crece" x="298" y="233" width="6" height="85" fill="#CFC3B4" style="transition-delay:0.16s"/>
+<rect class="p e3 crece" x="390" y="233" width="6" height="85" fill="#CFC3B4" style="transition-delay:0.24s"/>
+<rect class="p e3 crece" x="466" y="233" width="6" height="85" fill="#CFC3B4" style="transition-delay:0.32s"/>
+<rect class="p e3 crece" x="538" y="233" width="6" height="85" fill="#CFC3B4" style="transition-delay:0.4s"/>
+<rect class="p e3 creceX" x="100" y="226" width="448" height="7" fill="#CFC3B4" style="transition-delay:0.55s"/>
+<rect class="p e3 crece" x="202" y="152" width="6" height="74" fill="#CFC3B4" style="transition-delay:0.8s"/>
+<rect class="p e3 crece" x="290" y="152" width="6" height="74" fill="#CFC3B4" style="transition-delay:0.87s"/>
+<rect class="p e3 crece" x="370" y="152" width="6" height="74" fill="#CFC3B4" style="transition-delay:0.94s"/>
+<rect class="p e3 crece" x="450" y="152" width="6" height="74" fill="#CFC3B4" style="transition-delay:1.01s"/>
+<rect class="p e3 crece" x="532" y="152" width="6" height="74" fill="#CFC3B4" style="transition-delay:1.08s"/>
+<rect class="p e3 creceX" x="188" y="144" width="364" height="8" fill="#CFC3B4" style="transition-delay:1.15s"/>
+
+<!-- 4 · Fachada: muros, piedra, celosía de madera y puerta -->
+<rect class="p e4 crece" x="110" y="233" width="362" height="85" fill="#EFE6D8"/>
+<rect class="p e4 crece" x="110" y="233" width="104" height="85" fill="#B9A288" style="transition-delay:0.2s"/>
+<path class="p e4" d="M110 245H214M110 257H214M110 269H214M110 281H214M110 293H214M110 305H214M124 233V245M154 233V245M190 233V245M136 245V257M172 245V257M204 245V257M124 257V269M154 257V269M190 257V269M136 269V281M172 269V281M204 269V281M124 281V293M154 281V293M190 281V293M136 293V305M172 293V305M204 293V305M124 305V318M172 305V318" fill="none" stroke="#A08A70" stroke-width="1" style="transition-delay:0.6s"/>
+<rect class="p e4 crece" x="200" y="152" width="340" height="74" fill="#F6EFE3" style="transition-delay:0.35s"/>
+<rect class="p e4 crece" x="212" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:0.7s"/><rect class="p e4 crece" x="220" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:0.74s"/><rect class="p e4 crece" x="228" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:0.78s"/><rect class="p e4 crece" x="236" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:0.82s"/><rect class="p e4 crece" x="244" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:0.86s"/><rect class="p e4 crece" x="252" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:0.9s"/><rect class="p e4 crece" x="260" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:0.94s"/><rect class="p e4 crece" x="268" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:0.98s"/><rect class="p e4 crece" x="276" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:1.02s"/><rect class="p e4 crece" x="284" y="160" width="4" height="58" fill="#9A6B45" style="transition-delay:1.06s"/>
+<g class="p e4" style="transition-delay:0.9s"><rect x="150" y="264" width="30" height="54" fill="#7A2027"/><path d="M174 286V296" stroke="#EDD7BF" stroke-width="1.5"/></g>
+
+<!-- 5 · Ventanales: primero el vidrio, luego se encienden las luces -->
+<g class="p e5"><rect x="230" y="246" width="52" height="72" fill="#2B2622"/><rect class="p e5" x="230" y="246" width="52" height="72" fill="url(#luz)" style="transition-delay:0.9s"/><rect x="230" y="246" width="52" height="72" fill="none" stroke="#3E3630" stroke-width="2"/><path d="M256 246V318" stroke="#3E3630" stroke-width="1.2"/></g>
+<g class="p e5" style="transition-delay:0.08s"><rect x="288" y="246" width="52" height="72" fill="#2B2622"/><rect class="p e5" x="288" y="246" width="52" height="72" fill="url(#luz)" style="transition-delay:1.04s"/><rect x="288" y="246" width="52" height="72" fill="none" stroke="#3E3630" stroke-width="2"/><path d="M314 246V318" stroke="#3E3630" stroke-width="1.2"/></g>
+<g class="p e5" style="transition-delay:0.16s"><rect x="346" y="246" width="52" height="72" fill="#2B2622"/><rect class="p e5" x="346" y="246" width="52" height="72" fill="url(#luz)" style="transition-delay:1.18s"/><rect x="346" y="246" width="52" height="72" fill="none" stroke="#3E3630" stroke-width="2"/><path d="M372 246V318" stroke="#3E3630" stroke-width="1.2"/></g>
+<g class="p e5" style="transition-delay:0.24s"><rect x="404" y="246" width="52" height="72" fill="#2B2622"/><rect class="p e5" x="404" y="246" width="52" height="72" fill="url(#luz)" style="transition-delay:1.32s"/><rect x="404" y="246" width="52" height="72" fill="none" stroke="#3E3630" stroke-width="2"/><path d="M430 246V318" stroke="#3E3630" stroke-width="1.2"/></g>
+<g class="p e5" style="transition-delay:0.32s"><rect x="304" y="162" width="70" height="56" fill="#2B2622"/><rect class="p e5" x="304" y="162" width="70" height="56" fill="url(#luz)" style="transition-delay:1.46s"/><rect x="304" y="162" width="70" height="56" fill="none" stroke="#3E3630" stroke-width="2"/><path d="M339 162V218" stroke="#3E3630" stroke-width="1.2"/></g>
+<g class="p e5" style="transition-delay:0.4s"><rect x="381" y="162" width="70" height="56" fill="#2B2622"/><rect class="p e5" x="381" y="162" width="70" height="56" fill="url(#luz)" style="transition-delay:1.6s"/><rect x="381" y="162" width="70" height="56" fill="none" stroke="#3E3630" stroke-width="2"/><path d="M416 162V218" stroke="#3E3630" stroke-width="1.2"/></g>
+<g class="p e5" style="transition-delay:0.48s"><rect x="458" y="162" width="70" height="56" fill="#2B2622"/><rect class="p e5" x="458" y="162" width="70" height="56" fill="url(#luz)" style="transition-delay:1.74s"/><rect x="458" y="162" width="70" height="56" fill="none" stroke="#3E3630" stroke-width="2"/><path d="M493 162V218" stroke="#3E3630" stroke-width="1.2"/></g>
+<rect class="p e5" x="104" y="207" width="94" height="19" fill="rgba(200,225,225,.12)" stroke="rgba(237,215,191,.55)" stroke-width="1" style="transition-delay:0.3s"/>
+<g class="p e5" fill="#F9DFAF" style="transition-delay:1.5s"><circle cx="492" cy="236" r="1.6"/><circle cx="518" cy="236" r="1.6"/></g>
+
+<!-- 6 · Piscina y jardín (la grúa y el replanteo se retiran) -->
+<rect class="p e6" x="18" y="331" width="604" height="26" fill="rgba(110,127,90,.14)"/>
+<path class="p trazo e6" pathLength="1" d="M144 334H500" fill="none" stroke="#E6DACB" stroke-width="2.5" stroke-linecap="round" style="transition-delay:0.15s"/>
+<rect class="p e6 creceX" x="150" y="336" width="344" height="11" fill="url(#agua)" style="transition-delay:0.35s"/>
+<ellipse class="p e6 crece" cx="128" cy="325" rx="11" ry="7" fill="#6E7F5A" style="transition-delay:0.4s"/><ellipse class="p e6 crece" cx="222" cy="325" rx="11" ry="7" fill="#7D8B62" style="transition-delay:0.46s"/><ellipse class="p e6 crece" cx="300" cy="325" rx="11" ry="7" fill="#6E7F5A" style="transition-delay:0.52s"/><ellipse class="p e6 crece" cx="372" cy="325" rx="11" ry="7" fill="#7D8B62" style="transition-delay:0.58s"/><ellipse class="p e6 crece" cx="440" cy="325" rx="11" ry="7" fill="#6E7F5A" style="transition-delay:0.64s"/><ellipse class="p e6 crece" cx="500" cy="325" rx="11" ry="7" fill="#7D8B62" style="transition-delay:0.7s"/>
+<path class="p trazo e6" pathLength="1" d="M70 330C66 292 74 252 86 210" fill="none" stroke="#8B7355" stroke-width="5" stroke-linecap="round" style="transition-delay:0.5s"/>
+<path class="p trazo e6" pathLength="1" d="M86 210C72 198 58 200 44 214" fill="none" stroke="#7E8F63" stroke-width="3" stroke-linecap="round" style="transition-delay:0.95s"/>
+<path class="p trazo e6" pathLength="1" d="M86 210C74 190 60 184 44 186" fill="none" stroke="#7E8F63" stroke-width="3" stroke-linecap="round" style="transition-delay:1s"/>
+<path class="p trazo e6" pathLength="1" d="M86 210C82 192 80 180 70 166" fill="none" stroke="#7E8F63" stroke-width="3" stroke-linecap="round" style="transition-delay:1.05s"/>
+<path class="p trazo e6" pathLength="1" d="M86 210C90 190 100 178 114 174" fill="none" stroke="#7E8F63" stroke-width="3" stroke-linecap="round" style="transition-delay:1.1s"/>
+<path class="p trazo e6" pathLength="1" d="M86 210C100 198 114 200 126 214" fill="none" stroke="#7E8F63" stroke-width="3" stroke-linecap="round" style="transition-delay:1.15s"/>
+<path class="p trazo e6" pathLength="1" d="M86 210C96 206 106 214 112 228" fill="none" stroke="#7E8F63" stroke-width="3" stroke-linecap="round" style="transition-delay:1.2s"/>
+<path class="p trazo e6" pathLength="1" d="M86 210C74 206 64 214 58 228" fill="none" stroke="#7E8F63" stroke-width="3" stroke-linecap="round" style="transition-delay:1.25s"/>
+<path class="p trazo e6" pathLength="1" d="M586 330C588 314 582 302 588 290" fill="none" stroke="#7A6A55" stroke-width="4" stroke-linecap="round" style="transition-delay:0.7s"/>
+<g class="p e6 crece" style="transition-delay:1s"><ellipse cx="588" cy="278" rx="26" ry="17" fill="#7D8B62"/><ellipse cx="568" cy="286" rx="15" ry="11" fill="#6E7F5A"/><ellipse cx="608" cy="286" rx="15" ry="11" fill="#6E7F5A"/><ellipse cx="590" cy="266" rx="16" ry="11" fill="#8A9A6B"/></g>
+
+<!-- 7 · Reflejos de las luces en el agua -->
+<g class="p e7" style="transition-delay:0.3s"><path class="reflejo" d="M249 340h14" stroke="#F2C98E" stroke-width="1.5" stroke-linecap="round" style="animation-delay:0.00s"/><path class="reflejo" d="M307 340h14" stroke="#F2C98E" stroke-width="1.5" stroke-linecap="round" style="animation-delay:0.45s"/><path class="reflejo" d="M365 340h14" stroke="#F2C98E" stroke-width="1.5" stroke-linecap="round" style="animation-delay:0.90s"/><path class="reflejo" d="M423 340h14" stroke="#F2C98E" stroke-width="1.5" stroke-linecap="round" style="animation-delay:1.35s"/></g>
+</svg>
+      <script>if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) document.getElementById('obraSvg').setAttribute('class', 'obraSvg anim');</script>
+      <span class="rotulo" id="rotulo">Alzado principal · Villa en obra</span>
+      <div class="barra" id="progreso" style="width:100%"></div>
+      <figcaption class="estado" aria-hidden="true"><b id="etapa">Lista para entrar a vivir</b><span id="etapaNum">07 / 07</span></figcaption>
+    </figure>
+  </div>
+</main>
+
+<div data-idioma="es"><footer class="pie">
+  <div class="top">
+    <div>
+      <img src="/w-logo-claro.png" alt="W Real Estate" width="61" height="52">
+      <p>Agencia inmobiliaria de lujo en la Costa del Sol. Marbella, Estepona, Benahavís y Sotogrande.</p>
+    </div>
+    <nav><a href="/comprar/">Comprar</a><a href="/vender/">Vender</a><a href="/nosotros/">Nosotros</a><a href="/contacto/">Contacto</a></nav>
+    <nav>
+      <a href="tel:+34623798619">+34 623 79 86 19</a>
+      <a href="mailto:marina@wrealestate.es">marina@wrealestate.es</a>
+      <a href="https://maps.app.goo.gl/2Doc5xCwpezj4fey8" target="_blank" rel="noopener">Av. del Carmen, 5, Loc 9 · 29680 Estepona, Málaga</a>
+    </nav>
+  </div>
+  <div class="abajo"><span>© 2026 W Real Estate · Todos los derechos reservados</span><nav class="legales"><a href="/aviso-legal/">Aviso legal</a><a href="/privacidad/">Política de privacidad</a><a href="/cookies/">Cookies</a></nav><span>Estepona · Marbella · Benahavís · Sotogrande</span></div>
+</footer></div>
+<div data-idioma="en" hidden><footer class="pie">
+  <div class="top">
+    <div>
+      <img src="/w-logo-claro.png" alt="W Real Estate" width="61" height="52">
+      <p>Luxury real estate agency on the Costa del Sol. Marbella, Estepona, Benahavís and Sotogrande.</p>
+    </div>
+    <nav><a href="/en/buy/">Buy</a><a href="/en/sell/">Sell</a><a href="/en/about/">About</a><a href="/en/contact/">Contact</a></nav>
+    <nav>
+      <a href="tel:+34623798619">+34 623 79 86 19</a>
+      <a href="mailto:marina@wrealestate.es">marina@wrealestate.es</a>
+      <a href="https://maps.app.goo.gl/2Doc5xCwpezj4fey8" target="_blank" rel="noopener">Av. del Carmen, 5, Loc 9 · 29680 Estepona, Málaga</a>
+    </nav>
+  </div>
+  <div class="abajo"><span>© 2026 W Real Estate · All rights reserved</span><nav class="legales"><a href="/en/legal-notice/">Legal notice</a><a href="/en/privacy/">Privacy policy</a><a href="/en/cookies/">Cookies</a></nav><span>Estepona · Marbella · Benahavís · Sotogrande</span></div>
+</footer></div>
+<script>
+(function(){
+  var D = {"munis":{"marbella":"Marbella","benahavis":"Benahavís","estepona":"Estepona","mijas":"Mijas","sotogrande":"Sotogrande","casares":"Casares","manilva":"Manilva","fuengirola":"Fuengirola"},"es":{"titulo":"Estamos construyendo algo mejor · W Real Estate","verEn":"Ver propiedades en ","mensaje":"Hola, he llegado a esta página de wrealestate.es y ya no está disponible: ","rotulo":"Alzado principal · Villa en obra","etapas":["Proyecto","Cimientos","Estructura","Fachada","Ventanales y luz","Piscina y jardín","Lista para entrar a vivir"],"aria":"Animación: una villa se construye desde los cimientos hasta quedar lista para entrar a vivir."},"en":{"titulo":"We’re building something better · W Real Estate","verEn":"View properties in ","mensaje":"Hello, I followed a link to wrealestate.es that is no longer available: ","rotulo":"Front elevation · Villa under construction","etapas":["Design","Foundations","Structure","Façade","Glazing & light","Pool & garden","Ready to move in"],"aria":"Animation: a villa is built from the foundations until it is ready to move in."}};
+  var ruta = location.pathname;
+  var q = /[?&]lang=(es|en)(&|$)/.exec(location.search);
+  var idioma = q ? q[1] : (/^\/en(\/|$)/.test(ruta) || !/^es\b/i.test(navigator.language || 'es')) ? 'en' : 'es';
+  var t = D[idioma];
+  document.documentElement.lang = idioma;
+  document.title = t.titulo;
+  /* Se queda solo el idioma elegido; así la cabecera y el menú no tienen identificadores repetidos. */
+  [].slice.call(document.querySelectorAll('[data-idioma]')).forEach(function(el){
+    if (el.getAttribute('data-idioma') === idioma) el.hidden = false; else el.parentNode.removeChild(el);
+  });
+
+  /* Si el enlace era de una propiedad o de un municipio, se ofrece lo más parecido. */
+  var m = /^\/(?:comprar|en\/buy)\/([^\/]+)\/([^\/]+)?/.exec(ruta);
+  var muni = m && D.munis[m[1]];
+  var ver = document.querySelector('[data-ver]');
+  if (ver && muni) { ver.textContent = t.verEn + muni; ver.href = (idioma === 'en' ? '/en/buy/' : '/comprar/') + m[1] + '/'; }
+  var aviso = document.querySelector('[data-propiedad]');
+  if (aviso && m && m[2]) aviso.hidden = false;
+  var wa = document.querySelector('[data-whatsapp]');
+  if (wa) wa.href = 'https://wa.me/34623798619?text=' + encodeURIComponent(t.mensaje + location.href);
+
+  /* La obra: cada etapa añade una clase y el CSS dibuja lo que le toca. Luego se repite. */
+  var svg = document.getElementById('obraSvg'), lienzo = document.getElementById('lienzo');
+  var cap = document.getElementById('etapa'), num = document.getElementById('etapaNum'), barra = document.getElementById('progreso');
+  document.getElementById('rotulo').textContent = t.rotulo;
+  svg.setAttribute('aria-label', t.aria);
+  var N = t.etapas.length, dos = function(n){ return (n < 10 ? '0' : '') + n; };
+  var marcar = function(n){ cap.textContent = t.etapas[n - 1]; num.textContent = dos(n) + ' / ' + dos(N); barra.style.width = (n / N * 100) + '%'; };
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { marcar(N); return; }
+  var TIEMPOS = [80, 1300, 2300, 3700, 5000, 6400, 7800];
+  (function ciclo(){
+    svg.setAttribute('class', 'obraSvg anim reinicio');
+    svg.getBoundingClientRect();
+    svg.setAttribute('class', 'obraSvg anim');
+    lienzo.classList.remove('fuera');
+    marcar(1);
+    TIEMPOS.forEach(function(ms, i){ setTimeout(function(){ svg.classList.add('f' + (i + 1)); marcar(i + 1); }, ms); });
+    setTimeout(function(){ lienzo.classList.add('fuera'); }, 15000);
+    setTimeout(ciclo, 15900);
+  })();
+})();
+</script>
+<script>
+(function(){
+  var cab = document.getElementById('cab');
+  if (!cab) return;
+  if (cab.getAttribute('data-solida') !== '1') {
+    var heroAlto = function(){ var h = document.querySelector('.hero'); return h ? h.offsetHeight - 120 : 400; };
+    var alDesplazar = function(){ cab.classList.toggle('fija', window.scrollY > heroAlto()); };
+    alDesplazar();
+    window.addEventListener('scroll', alDesplazar, { passive: true });
+  }
+  var panel = document.getElementById('menuPanel');
+  var abrir = document.getElementById('menuBtn');
+  var cerrar = document.getElementById('menuCerrar');
+  if (panel && abrir) abrir.addEventListener('click', function(){ panel.classList.add('abierto'); });
+  if (panel && cerrar) cerrar.addEventListener('click', function(){ panel.classList.remove('abierto'); });
+})();
+</script>
+</body>
+</html>
