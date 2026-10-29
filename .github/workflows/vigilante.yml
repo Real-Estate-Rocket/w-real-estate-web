@@ -1,0 +1,105 @@
+# Vigilante de la web: cada 15 minutos comprueba que wrealestate.es responde.
+# Si falla en tres intentos seguidos (con un minuto entre ellos), abre la incidencia «Web caída»
+# asignada a agm1212 y GitHub envía un correo. Cuando la web vuelve, la cierra y llega otro correo.
+# Mientras siga caída no repite el aviso: la incidencia abierta ya lo dice.
+# Para probarlo: Actions → «Vigilante de la web» → Run workflow → marcar «Simular una caída».
+# OJO: GitHub pausa las tareas programadas de un repositorio público tras 60 días sin cambios;
+# si pasa, se reactiva en Actions → «Vigilante de la web» → Enable workflow.
+name: Vigilante de la web
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      simular_caida:
+        description: 'Simular una caída para probar el aviso'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: vigilante
+  cancel-in-progress: false
+
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Comprobar la web (tres intentos, con un minuto entre ellos)
+        id: web
+        env:
+          SIMULAR: ${{ inputs.simular_caida && 'si' || 'no' }}
+        run: |
+          # Cada página debe responder 200 y ser de W (no la página de error de GitHub ni la nuestra).
+          revisar() {
+            local nombre="$1" url="$2" codigo
+            codigo=$(curl -sS -L -o pagina.html -w '%{http_code}' --max-time 25 \
+              -A 'VigilanteW/1.0 (+https://github.com/Real-Estate-Rocket/w-real-estate-web)' \
+              "${url}?vigilante=$(date +%s)" 2>error.txt) || codigo="sin respuesta ($(head -c 160 error.txt | tr '\n' ' '))"
+            if [ "$codigo" != "200" ] || ! grep -q '<title>[^<]*W Real Estate' pagina.html; then
+              FALLOS+="- ${nombre} (${url}): ${codigo}"$'\n'
+            fi
+          }
+          for intento in 1 2 3; do
+            FALLOS=""
+            revisar "Portada" "https://wrealestate.es/"
+            revisar "Buscador de propiedades" "https://wrealestate.es/comprar/"
+            revisar "Portada en inglés" "https://wrealestate.es/en/"
+            revisar "Dirección con www" "https://www.wrealestate.es/"
+            if [ "$SIMULAR" = "si" ]; then
+              FALLOS="- Caída simulada a mano para probar el aviso (la web en realidad funciona)"$'\n'
+              break
+            fi
+            if [ -z "$FALLOS" ]; then break; fi
+            echo "Intento $intento con fallos:"
+            printf '%s' "$FALLOS"
+            if [ "$intento" -lt 3 ]; then sleep 60; fi
+          done
+          if [ -n "$FALLOS" ]; then
+            echo "estado=caida" >> "$GITHUB_OUTPUT"
+            { echo "detalle<<FIN_DETALLE"; printf '%s' "$FALLOS"; echo "FIN_DETALLE"; } >> "$GITHUB_OUTPUT"
+          else
+            echo "Todo correcto."
+            echo "estado=ok" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Abrir o cerrar la incidencia «Web caída»
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          ESTADO: ${{ steps.web.outputs.estado }}
+          DETALLE: ${{ steps.web.outputs.detalle }}
+          EJECUCION: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          AVISAR: agm1212
+        run: |
+          gh label create web-caida --color B60205 --description 'Aviso automático del vigilante de la web' >/dev/null 2>&1 || true
+          ahora=$(TZ=Europe/Madrid date '+%d/%m/%Y a las %H:%M')
+          abierta=$(gh issue list --state open --label web-caida --json number --jq '.[0].number // empty')
+          if [ "$ESTADO" = "caida" ]; then
+            if [ -n "$abierta" ]; then
+              echo "La web sigue caída; la incidencia #$abierta ya está abierta."
+              exit 0
+            fi
+            cuerpo="**wrealestate.es no responde** desde el ${ahora} (hora de España). Se ha comprobado tres veces, con un minuto entre intentos.
+
+          Lo que ha fallado:
+          ${DETALLE}
+
+          Qué revisar, por orden:
+          1. GitHub → Settings → Pages de este repositorio: que «Custom domain» siga siendo wrealestate.es y esté verificado (solo lo puede tocar un administrador de la organización).
+          2. Cloudflare → DNS: los cuatro registros A a 185.199.108.153 · 109 · 110 · 111 y el CNAME de www a real-estate-rocket.github.io, todos con la nube gris.
+          3. Estado de GitHub: https://www.githubstatus.com
+
+          Esta incidencia se cierra sola cuando la web vuelva a responder. Comprobación: ${EJECUCION}"
+            gh issue create --title "Web caída: wrealestate.es no responde" --label web-caida --assignee "$AVISAR" --body "$cuerpo"
+            exit 1
+          elif [ -n "$abierta" ]; then
+            gh issue close "$abierta" --comment "La web vuelve a responder bien desde el ${ahora} (hora de España). Comprobación: ${EJECUCION}"
+          else
+            echo "Todo correcto; no hay ninguna incidencia abierta."
+          fi
