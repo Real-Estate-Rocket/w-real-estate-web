@@ -376,36 +376,6 @@ dialog::backdrop{background:rgba(30,26,23,.82)}
   </div>
 </main>
 
-<div data-idioma="es"><footer class="pie">
-  <div class="top">
-    <div>
-      <img src="/w-logo-claro.png" alt="W Real Estate" width="61" height="52">
-      <p>Agencia inmobiliaria de lujo en la Costa del Sol. Marbella, Estepona, Benahavís y Sotogrande.</p>
-    </div>
-    <nav><a href="/comprar/">Comprar</a><a href="/vender/">Vender</a><a href="/nosotros/">Nosotros</a><a href="/contacto/">Contacto</a></nav>
-    <nav>
-      <a href="tel:+34623798619">+34 623 79 86 19</a>
-      <a href="mailto:marina@wrealestate.es">marina@wrealestate.es</a>
-      <a href="https://maps.app.goo.gl/2Doc5xCwpezj4fey8" target="_blank" rel="noopener">Av. del Carmen, 5, Loc 9 · 29680 Estepona, Málaga</a>
-    </nav>
-  </div>
-  <div class="abajo"><span>© 2026 W Real Estate · Todos los derechos reservados</span><nav class="legales"><a href="/aviso-legal/">Aviso legal</a><a href="/privacidad/">Política de privacidad</a><a href="/cookies/">Cookies</a></nav><span>Estepona · Marbella · Benahavís · Sotogrande</span></div>
-</footer></div>
-<div data-idioma="en" hidden><footer class="pie">
-  <div class="top">
-    <div>
-      <img src="/w-logo-claro.png" alt="W Real Estate" width="61" height="52">
-      <p>Luxury real estate agency on the Costa del Sol. Marbella, Estepona, Benahavís and Sotogrande.</p>
-    </div>
-    <nav><a href="/en/buy/">Buy</a><a href="/en/sell/">Sell</a><a href="/en/about/">About</a><a href="/en/contact/">Contact</a></nav>
-    <nav>
-      <a href="tel:+34623798619">+34 623 79 86 19</a>
-      <a href="mailto:marina@wrealestate.es">marina@wrealestate.es</a>
-      <a href="https://maps.app.goo.gl/2Doc5xCwpezj4fey8" target="_blank" rel="noopener">Av. del Carmen, 5, Loc 9 · 29680 Estepona, Málaga</a>
-    </nav>
-  </div>
-  <div class="abajo"><span>© 2026 W Real Estate · All rights reserved</span><nav class="legales"><a href="/en/legal-notice/">Legal notice</a><a href="/en/privacy/">Privacy policy</a><a href="/en/cookies/">Cookies</a></nav><span>Estepona · Marbella · Benahavís · Sotogrande</span></div>
-</footer></div>
 <script>
 (function(){
   var D = {"munis":{"marbella":"Marbella","benahavis":"Benahavís","estepona":"Estepona","mijas":"Mijas","sotogrande":"Sotogrande","casares":"Casares","manilva":"Manilva","fuengirola":"Fuengirola"},"es":{"general":{"titulo":"Estamos construyendo algo mejor · W Real Estate","mensaje":"Hola, he llegado a esta página de wrealestate.es y ya no está disponible: "},"propiedad":{"titulo":"Esta propiedad ya no existe · W Real Estate","mensaje":"Hola, la propiedad de este enlace ya no está disponible en wrealestate.es. ¿Me pueden enseñar otras parecidas? "},"verEn":"Ver propiedades en ","rotulo":"Alzado principal · Villa en obra","etapas":["Proyecto","Cimientos","Estructura","Fachada","Ventanales y luz","Piscina y jardín","Lista para entrar a vivir"],"aria":"Animación: una villa se construye desde los cimientos hasta quedar lista para entrar a vivir."},"en":{"general":{"titulo":"We’re building something better · W Real Estate","mensaje":"Hello, I followed a link to wrealestate.es that is no longer available: "},"propiedad":{"titulo":"This property is no longer available · W Real Estate","mensaje":"Hello, the property at this link is no longer available on wrealestate.es. Could you show me similar ones? "},"verEn":"View properties in ","rotulo":"Front elevation · Villa under construction","etapas":["Design","Foundations","Structure","Façade","Glazing & light","Pool & garden","Ready to move in"],"aria":"Animation: a villa is built from the foundations until it is ready to move in."}};
@@ -419,9 +389,9 @@ dialog::backdrop{background:rgba(30,26,23,.82)}
   var t = D[idioma], v = t[variante];
   document.documentElement.lang = idioma;
   document.title = v.titulo;
-  /* Se queda solo el texto del idioma y la versión elegidos, y el pie de ese idioma. */
+  /* Se queda solo el texto del idioma y la versión elegidos. */
   [].slice.call(document.querySelectorAll('[data-idioma]')).forEach(function(el){
-    var vale = el.getAttribute('data-idioma') === idioma && (!el.hasAttribute('data-variante') || el.getAttribute('data-variante') === variante);
+    var vale = el.getAttribute('data-idioma') === idioma && el.getAttribute('data-variante') === variante;
     if (vale) el.hidden = false; else el.parentNode.removeChild(el);
   });
 
