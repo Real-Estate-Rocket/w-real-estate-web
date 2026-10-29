@@ -69,4 +69,4 @@ Datos completos y registro: ${EJECUCION}"
 if [ -n "${INCIDENCIA:-}" ]; then
   gh issue comment "$INCIDENCIA" --body "$informe"
 fi
-echo "$informe" >> "$GITHUB_STEP_SUMMARY"
+echo "$informe" | tee -a "$GITHUB_STEP_SUMMARY"

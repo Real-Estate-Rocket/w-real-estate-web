@@ -127,4 +127,5 @@ if [ ! -s "$PISTAS" ]; then
   fi
 fi
 { echo "pistas<<FIN_PISTAS"; cat "$PISTAS"; echo "FIN_PISTAS"; } >> "$GITHUB_OUTPUT"
-cat "$PISTAS"
+# Todo a la vista en la página de la ejecución (es el enlace «Datos completos» del informe).
+{ echo "## Comprobaciones automáticas"; cat "$PISTAS"; cat "$DATOS"; } | tee -a "$GITHUB_STEP_SUMMARY"
