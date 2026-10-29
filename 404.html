@@ -169,17 +169,22 @@ dialog::backdrop{background:rgba(30,26,23,.82)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
 
 [hidden]{display:none!important}
-.obra{min-height:100svh;background:var(--champan);padding:calc(92px + clamp(24px,4vw,56px)) 6vw clamp(48px,6vw,90px);display:flex;align-items:center}
-.obra .dentro{width:100%;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);gap:clamp(32px,5vw,80px);align-items:center}
-.obra .eyebrow{display:block;margin-bottom:16px}
-.obra h1{margin:0 0 22px;font-size:clamp(40px,5.2vw,74px);line-height:1.02}
+.obra{min-height:100svh;background:var(--champan);padding:clamp(32px,4.5vw,64px) 6vw clamp(48px,6vw,90px);display:flex;align-items:center}
+.obra .dentro{width:100%;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);grid-template-areas:"firma lienzo" "texto lienzo";gap:30px clamp(32px,5vw,80px);align-items:center}
+.obra .firma{grid-area:firma;align-self:end}
+.obra .firma img{height:clamp(52px,4.6vw,66px);width:auto}
+.obra .texto{grid-area:texto;align-self:start}
+.obra .texto.comprobando{visibility:hidden}
+.obra .eyebrow{display:block;margin-bottom:18px;font-size:13px;letter-spacing:.2em}
+.obra .eyebrow b{font-weight:700}
+.obra h1{margin:0 0 24px;font-size:clamp(44px,6vw,90px);line-height:1}
 .obra h1 em{font-style:italic;color:var(--burdeos)}
 .obra p{margin:0 0 14px;max-width:32em;color:var(--gris);font-size:16.5px;line-height:1.85}
 .obra .acciones{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
 .obra .menor{margin-top:28px;font-size:12.5px;letter-spacing:.06em;color:var(--gris2)}
 .obra .menor a{color:var(--carbon);border-bottom:1px solid var(--linea);padding-bottom:1px}
 .obra .menor a:hover{color:var(--burdeos);border-bottom-color:var(--burdeos)}
-.lienzo{position:relative;margin:0;aspect-ratio:640/420;overflow:hidden;background:linear-gradient(180deg,#110E0C 0%,#1E1A17 80%);box-shadow:0 50px 90px -60px rgba(43,10,14,.65)}
+.lienzo{grid-area:lienzo;position:relative;margin:0;aspect-ratio:640/420;overflow:hidden;background:linear-gradient(180deg,#110E0C 0%,#1E1A17 80%);box-shadow:0 50px 90px -60px rgba(43,10,14,.65)}
 .lienzo svg{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity .8s ease}
 .lienzo .rotulo{position:absolute;top:16px;left:18px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,215,191,.6)}
 .lienzo .estado{position:absolute;left:18px;right:18px;bottom:14px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--crema);transition:opacity .8s ease}
@@ -205,9 +210,10 @@ dialog::backdrop{background:rgba(30,26,23,.82)}
 @keyframes brillo{0%,100%{opacity:.9}50%{opacity:.25}}
 @keyframes reflejo{0%,100%{opacity:.85;transform:translateX(0)}50%{opacity:.35;transform:translateX(3px)}}
 @media (max-width:900px){
- .obra{padding-top:calc(68px + 30px);align-items:flex-start}
- .obra .dentro{grid-template-columns:1fr;gap:30px}
- .lienzo{order:-1}
+ .obra{padding-top:26px;align-items:flex-start}
+ .obra .dentro{grid-template-columns:1fr;grid-template-areas:"firma" "lienzo" "texto";gap:26px}
+ .obra .firma{justify-self:center}
+ .obra .firma img{height:46px}
 }
 @media (max-width:560px){
  .lienzo .rotulo{display:none}
@@ -218,75 +224,53 @@ dialog::backdrop{background:rgba(30,26,23,.82)}
 </head>
 <body>
 
-<div data-idioma="es"><header class="cab fija" id="cab" data-solida="1">
-  <nav class="izq"><a href="/comprar/">Comprar</a><a href="/vender/">Vender</a><a href="/zonas/">Zonas</a></nav>
-  <button class="menuBtn" id="menuBtn" type="button" aria-label="Menú"><span></span><span></span></button>
-  <a class="marca" href="/" aria-label="W Real Estate">
-    <img class="logo claro" src="/w-logo-claro.png" alt="W Real Estate" width="123" height="105">
-    <img class="logo tinta" src="/w-logo-tinta.png" alt="W Real Estate" width="123" height="105">
-  </a>
-  <nav class="der"><a href="/nosotros/">Nosotros</a><a href="/contacto/">Contacto</a>
-    <span class="sep"></span>
-    <a class="tel" href="tel:+34623798619">+34 623 79 86 19</a>
-    <span class="idi"><a class="on" href="#" hreflang="es">ES</a><span class="barra">|</span><a class="" href="?lang=en" hreflang="en">EN</a></span>
-  </nav>
-</header>
-<div class="menuPanel" id="menuPanel">
-  <div class="arriba">
-    <img src="/w-logo-claro.png" alt="W Real Estate" width="94" height="80">
-    <button class="cerrarM" type="button" id="menuCerrar">Cerrar</button>
-  </div>
-  <nav><a href="/comprar/">Comprar</a><a href="/vender/">Vender</a><a href="/zonas/">Zonas</a><a href="/nosotros/">Nosotros</a><a href="/contacto/">Contacto</a></nav>
-  <div class="pieM"><a href="tel:+34623798619">+34 623 79 86 19</a><a href="?lang=en">English</a></div>
-</div></div>
-<div data-idioma="en" hidden><header class="cab fija" id="cab" data-solida="1">
-  <nav class="izq"><a href="/en/buy/">Buy</a><a href="/en/sell/">Sell</a><a href="/en/areas/">Areas</a></nav>
-  <button class="menuBtn" id="menuBtn" type="button" aria-label="Menu"><span></span><span></span></button>
-  <a class="marca" href="/en/" aria-label="W Real Estate">
-    <img class="logo claro" src="/w-logo-claro.png" alt="W Real Estate" width="123" height="105">
-    <img class="logo tinta" src="/w-logo-tinta.png" alt="W Real Estate" width="123" height="105">
-  </a>
-  <nav class="der"><a href="/en/about/">About</a><a href="/en/contact/">Contact</a>
-    <span class="sep"></span>
-    <a class="tel" href="tel:+34623798619">+34 623 79 86 19</a>
-    <span class="idi"><a class="on" href="?lang=es" hreflang="es">ES</a><span class="barra">|</span><a class="on" href="#" hreflang="en">EN</a></span>
-  </nav>
-</header>
-<div class="menuPanel" id="menuPanel">
-  <div class="arriba">
-    <img src="/w-logo-claro.png" alt="W Real Estate" width="94" height="80">
-    <button class="cerrarM" type="button" id="menuCerrar">Close</button>
-  </div>
-  <nav><a href="/en/buy/">Buy</a><a href="/en/sell/">Sell</a><a href="/en/areas/">Areas</a><a href="/en/about/">About</a><a href="/en/contact/">Contact</a></nav>
-  <div class="pieM"><a href="tel:+34623798619">+34 623 79 86 19</a><a href="?lang=es">Español</a></div>
-</div></div>
-
 <main class="obra">
   <div class="dentro">
-    <div class="texto">
-    <div data-idioma="es">
-      <span class="eyebrow">Obras de mejora</span>
+    <div class="firma"><img src="/w-logo-tinta.png" alt="W Real Estate" width="123" height="105"></div>
+    <div class="texto" id="texto">
+    <div data-idioma="es" data-variante="general">
+      <span class="eyebrow"><b>Error 404</b> · Obras de mejora</span>
       <h1>Estamos construyendo <em>algo mejor</em></h1>
       <p>Estamos realizando mejoras en nuestra web para ofrecerle una experiencia todavía mejor. Es posible que esta página haya cambiado de dirección o que ya no esté disponible.</p>
-      <p data-propiedad hidden>Si buscaba una propiedad concreta, puede que se haya vendido o retirado del mercado. Nuestro equipo puede enseñarle otras parecidas.</p>
       <div class="acciones">
         <a class="btn" data-ver href="/comprar/">Ver propiedades</a>
         <a class="btn sec" href="/zonas/">Guías de zona</a>
         <a class="btn sec" data-whatsapp href="https://wa.me/34623798619" target="_blank" rel="noopener">Escríbanos por WhatsApp</a>
       </div>
-      <p class="menor"><a href="/">Volver al inicio</a> · Código de error 404</p>
+      <p class="menor"><a href="/">Volver al inicio</a> · <a href="?lang=en" hreflang="en" lang="en">English</a></p>
     </div>
-    <div data-idioma="en" hidden>
-      <span class="eyebrow">Improvements under way</span>
+    <div data-idioma="es" data-variante="propiedad" hidden>
+      <span class="eyebrow"><b>Error 404</b> · Propiedad no disponible</span>
+      <h1>Esta propiedad <em>ya no existe</em></h1>
+      <p>La propiedad que buscaba ya no está en nuestro catálogo: es posible que se haya vendido o que se haya retirado del mercado. En la Costa del Sol tenemos otras propiedades disponibles que pueden interesarle.</p>
+      <div class="acciones">
+        <a class="btn" href="/comprar/">Ver todas las propiedades</a>
+        <a class="btn sec" data-muni href="/comprar/" hidden>Ver todas las propiedades</a>
+        <a class="btn sec" data-whatsapp href="https://wa.me/34623798619" target="_blank" rel="noopener">Escríbanos por WhatsApp</a>
+      </div>
+      <p class="menor"><a href="/">Volver al inicio</a> · <a href="?lang=en" hreflang="en" lang="en">English</a></p>
+    </div>
+    <div data-idioma="en" data-variante="general" hidden>
+      <span class="eyebrow"><b>Error 404</b> · Improvements under way</span>
       <h1>We’re building <em>something better</em></h1>
       <p>We’re making improvements to our website to give you an even better experience. This page may have moved, or it may no longer be available.</p>
-      <p data-propiedad hidden>If you were looking for a specific property, it may have been sold or taken off the market. Our team can show you similar homes.</p>
       <div class="acciones">
         <a class="btn" data-ver href="/en/buy/">View properties</a>
         <a class="btn sec" href="/en/areas/">Area guides</a>
         <a class="btn sec" data-whatsapp href="https://wa.me/34623798619" target="_blank" rel="noopener">Message us on WhatsApp</a>
       </div>
-      <p class="menor"><a href="/en/">Back to the home page</a> · Error code 404</p>
+      <p class="menor"><a href="/en/">Back to the home page</a> · <a href="?lang=es" hreflang="es" lang="es">Español</a></p>
+    </div>
+    <div data-idioma="en" data-variante="propiedad" hidden>
+      <span class="eyebrow"><b>Error 404</b> · Property unavailable</span>
+      <h1>This property is <em>no longer available</em></h1>
+      <p>The property you were looking for is no longer in our catalogue: it may have been sold or taken off the market. We have other properties available on the Costa del Sol that may interest you.</p>
+      <div class="acciones">
+        <a class="btn" href="/en/buy/">See all properties</a>
+        <a class="btn sec" data-muni href="/en/buy/" hidden>See all properties</a>
+        <a class="btn sec" data-whatsapp href="https://wa.me/34623798619" target="_blank" rel="noopener">Message us on WhatsApp</a>
+      </div>
+      <p class="menor"><a href="/en/">Back to the home page</a> · <a href="?lang=es" hreflang="es" lang="es">Español</a></p>
     </div>
     </div>
     <figure class="lienzo" id="lienzo">
@@ -424,27 +408,45 @@ dialog::backdrop{background:rgba(30,26,23,.82)}
 </footer></div>
 <script>
 (function(){
-  var D = {"munis":{"marbella":"Marbella","benahavis":"Benahavís","estepona":"Estepona","mijas":"Mijas","sotogrande":"Sotogrande","casares":"Casares","manilva":"Manilva","fuengirola":"Fuengirola"},"es":{"titulo":"Estamos construyendo algo mejor · W Real Estate","verEn":"Ver propiedades en ","mensaje":"Hola, he llegado a esta página de wrealestate.es y ya no está disponible: ","rotulo":"Alzado principal · Villa en obra","etapas":["Proyecto","Cimientos","Estructura","Fachada","Ventanales y luz","Piscina y jardín","Lista para entrar a vivir"],"aria":"Animación: una villa se construye desde los cimientos hasta quedar lista para entrar a vivir."},"en":{"titulo":"We’re building something better · W Real Estate","verEn":"View properties in ","mensaje":"Hello, I followed a link to wrealestate.es that is no longer available: ","rotulo":"Front elevation · Villa under construction","etapas":["Design","Foundations","Structure","Façade","Glazing & light","Pool & garden","Ready to move in"],"aria":"Animation: a villa is built from the foundations until it is ready to move in."}};
+  var D = {"munis":{"marbella":"Marbella","benahavis":"Benahavís","estepona":"Estepona","mijas":"Mijas","sotogrande":"Sotogrande","casares":"Casares","manilva":"Manilva","fuengirola":"Fuengirola"},"es":{"general":{"titulo":"Estamos construyendo algo mejor · W Real Estate","mensaje":"Hola, he llegado a esta página de wrealestate.es y ya no está disponible: "},"propiedad":{"titulo":"Esta propiedad ya no existe · W Real Estate","mensaje":"Hola, la propiedad de este enlace ya no está disponible en wrealestate.es. ¿Me pueden enseñar otras parecidas? "},"verEn":"Ver propiedades en ","rotulo":"Alzado principal · Villa en obra","etapas":["Proyecto","Cimientos","Estructura","Fachada","Ventanales y luz","Piscina y jardín","Lista para entrar a vivir"],"aria":"Animación: una villa se construye desde los cimientos hasta quedar lista para entrar a vivir."},"en":{"general":{"titulo":"We’re building something better · W Real Estate","mensaje":"Hello, I followed a link to wrealestate.es that is no longer available: "},"propiedad":{"titulo":"This property is no longer available · W Real Estate","mensaje":"Hello, the property at this link is no longer available on wrealestate.es. Could you show me similar ones? "},"verEn":"View properties in ","rotulo":"Front elevation · Villa under construction","etapas":["Design","Foundations","Structure","Façade","Glazing & light","Pool & garden","Ready to move in"],"aria":"Animation: a villa is built from the foundations until it is ready to move in."}};
   var ruta = location.pathname;
   var q = /[?&]lang=(es|en)(&|$)/.exec(location.search);
   var idioma = q ? q[1] : (/^\/en(\/|$)/.test(ruta) || !/^es\b/i.test(navigator.language || 'es')) ? 'en' : 'es';
-  var t = D[idioma];
+  /* Enlace a una ficha: /comprar/<municipio>/<tipo>-<zona>-<referencia>/. La referencia lleva cifras;
+     las búsquedas (/comprar/marbella/villas/) no. */
+  var prop = /^\/(comprar|en\/buy)\/([^\/]+)\/[^\/]*-([a-z0-9]*[0-9][a-z0-9]*)\/?$/i.exec(ruta);
+  var variante = prop ? 'propiedad' : 'general';
+  var t = D[idioma], v = t[variante];
   document.documentElement.lang = idioma;
-  document.title = t.titulo;
-  /* Se queda solo el idioma elegido; así la cabecera y el menú no tienen identificadores repetidos. */
+  document.title = v.titulo;
+  /* Se queda solo el texto del idioma y la versión elegidos, y el pie de ese idioma. */
   [].slice.call(document.querySelectorAll('[data-idioma]')).forEach(function(el){
-    if (el.getAttribute('data-idioma') === idioma) el.hidden = false; else el.parentNode.removeChild(el);
+    var vale = el.getAttribute('data-idioma') === idioma && (!el.hasAttribute('data-variante') || el.getAttribute('data-variante') === variante);
+    if (vale) el.hidden = false; else el.parentNode.removeChild(el);
   });
 
-  /* Si el enlace era de una propiedad o de un municipio, se ofrece lo más parecido. */
-  var m = /^\/(?:comprar|en\/buy)\/([^\/]+)\/([^\/]+)?/.exec(ruta);
+  /* Si el enlace era de un municipio con página, un botón lleva a sus propiedades. */
+  var m = /^\/(?:comprar|en\/buy)\/([^\/]+)\//.exec(ruta);
   var muni = m && D.munis[m[1]];
-  var ver = document.querySelector('[data-ver]');
-  if (ver && muni) { ver.textContent = t.verEn + muni; ver.href = (idioma === 'en' ? '/en/buy/' : '/comprar/') + m[1] + '/'; }
-  var aviso = document.querySelector('[data-propiedad]');
-  if (aviso && m && m[2]) aviso.hidden = false;
+  var boton = document.querySelector(prop ? '[data-muni]' : '[data-ver]');
+  if (boton && muni) { boton.textContent = t.verEn + muni; boton.href = (idioma === 'en' ? '/en/buy/' : '/comprar/') + m[1] + '/'; boton.hidden = false; }
   var wa = document.querySelector('[data-whatsapp]');
-  if (wa) wa.href = 'https://wa.me/34623798619?text=' + encodeURIComponent(t.mensaje + location.href);
+  if (wa) wa.href = 'https://wa.me/34623798619?text=' + encodeURIComponent(v.mensaje + location.href);
+
+  /* Antes de decir que la propiedad ya no existe, se busca su referencia en el catálogo publicado:
+     si la ficha sigue ahí con otra dirección (cambió la zona o el tipo), se lleva al visitante a ella. */
+  if (prop) {
+    var texto = document.getElementById('texto');
+    var mostrar = function(){ texto.classList.remove('comprobando'); };
+    var fin = '-' + prop[3].toLowerCase() + '/', idiomaRuta = prop[1] === 'comprar' ? 'es' : 'en';
+    texto.classList.add('comprobando');
+    setTimeout(mostrar, 2500);
+    if (window.fetch) fetch('/paginas-generadas.json').then(function(r){ return r.json(); }).then(function(g){
+      var nueva = (g.rutas || []).filter(function(r){ return r.idioma === idiomaRuta && r.ruta.slice(-fin.length) === fin; })[0];
+      if (nueva && nueva.ruta !== ruta) location.replace(nueva.ruta + location.search + location.hash); else mostrar();
+    }).catch(mostrar);
+    else mostrar();
+  }
 
   /* La obra: cada etapa añade una clase y el CSS dibuja lo que le toca. Luego se repite. */
   var svg = document.getElementById('obraSvg'), lienzo = document.getElementById('lienzo');
@@ -465,23 +467,6 @@ dialog::backdrop{background:rgba(30,26,23,.82)}
     setTimeout(function(){ lienzo.classList.add('fuera'); }, 15000);
     setTimeout(ciclo, 15900);
   })();
-})();
-</script>
-<script>
-(function(){
-  var cab = document.getElementById('cab');
-  if (!cab) return;
-  if (cab.getAttribute('data-solida') !== '1') {
-    var heroAlto = function(){ var h = document.querySelector('.hero'); return h ? h.offsetHeight - 120 : 400; };
-    var alDesplazar = function(){ cab.classList.toggle('fija', window.scrollY > heroAlto()); };
-    alDesplazar();
-    window.addEventListener('scroll', alDesplazar, { passive: true });
-  }
-  var panel = document.getElementById('menuPanel');
-  var abrir = document.getElementById('menuBtn');
-  var cerrar = document.getElementById('menuCerrar');
-  if (panel && abrir) abrir.addEventListener('click', function(){ panel.classList.add('abierto'); });
-  if (panel && cerrar) cerrar.addEventListener('click', function(){ panel.classList.remove('abierto'); });
 })();
 </script>
 </body>
