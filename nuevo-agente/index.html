@@ -48,13 +48,13 @@
     .requirement-number { color:var(--wine); font-size:11px; letter-spacing:.06em; }
     .requirement-text { font-size:15px; line-height:1.65; }
     .requirement-text strong { font-weight:700; }
-    .application { min-width:0; }
+    .application { min-width:0; padding-top:20px; background:var(--white); }
+    .application-title { margin:0 32px; font-size:28px; line-height:1.15; }
     .form-embed { width:100%; }
-    .form-embed iframe { display:block; width:100%; max-width:100%; min-height:620px; border:0; }
+    /* Altura inicial: el embed la sustituye al medir cada paso del formulario. */
+    .form-embed iframe { display:block; width:100%; max-width:100%; height:520px; min-height:0; border:0; }
     @media (min-width:761px) {
       .landing { align-items:center; }
-      /* El embed sustituye esta altura inicial al medir el formulario. */
-      .form-embed iframe { height:620px; min-height:0; }
     }
     @media (max-width:1000px) {
       .landing { gap:32px; padding-block:36px; }
@@ -64,6 +64,7 @@
       .landing { grid-template-columns:minmax(0,1fr); gap:32px; padding-block:28px; }
       .logo { width:72px; margin-bottom:26px; }
       h1 { max-width:560px; font-size:clamp(40px,9.7vw,58px); }
+      .application-title { margin-inline:24px; font-size:26px; }
     }
   </style>
 </head>
@@ -84,7 +85,8 @@
         <li><span class="requirement-number" aria-hidden="true">04</span><span class="requirement-text">Buscas unirte a <strong>un proyecto ganador.</strong></span></li>
       </ol>
     </section>
-    <section class="application" aria-label="Formulario de candidatura">
+    <section class="application" aria-labelledby="candidatura-titulo">
+      <h2 class="application-title" id="candidatura-titulo">Presenta tu candidatura</h2>
       <div class="form-embed">
         <iframe src="https://link.realestaterocket.io/widget/survey/Y72yNVjyYApvbFVxQW87" style="border:none;width:100%;" scrolling="no" id="Y72yNVjyYApvbFVxQW87" title="Candidatura de agente inmobiliario para W Real Estate" data-cookie-consent="true" data-cookie-consent-provider="auto"></iframe>
         <script src="https://link.realestaterocket.io/js/form_embed.js"></script>
