@@ -52,6 +52,13 @@
     .application-title { margin:0 12px 18px; font-size:32px; line-height:1.1; }
     .form-embed { width:100%; }
     .form-embed iframe { display:block; width:100%; max-width:100%; min-height:620px; border:0; }
+    @media (min-width:761px) {
+      .landing { align-items:center; }
+      .application { padding:20px 12px 8px; }
+      .application-title { margin:0 12px 8px; }
+      /* El embed sustituye esta altura inicial al medir el formulario. */
+      .form-embed iframe { height:620px; min-height:0; }
+    }
     @media (max-width:1000px) {
       .landing { gap:32px; padding-block:36px; }
       h1 { font-size:clamp(39px,4.8vw,48px); }
